@@ -45,26 +45,29 @@ export class AuthService {
   }
   // new login method created in auth service
   login(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAQo0a4q1wkYCgYJeW81isDJ9JRUYm7Ib0',
-        {
-          email,
-          password,
-          returnSecureToken: true,
-        },
-      )
-      .pipe(
-        catchError(this.handleError),
-        tap(resData => {
-          this.handleAuthentication(
-            resData.email,
-            resData.localId,
-            resData.idToken,
-            +resData.expiresIn,
-          );
-        }),
-      );
+    return (
+      this.http
+        .post<AuthResponseData>(
+          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAQo0a4q1wkYCgYJeW81isDJ9JRUYm7Ib0',
+          {
+            email,
+            password,
+            returnSecureToken: true,
+          },
+        )
+        // login error handling start
+        .pipe(
+          catchError(this.handleError),
+          tap(resData => {
+            this.handleAuthentication(
+              resData.email,
+              resData.localId,
+              resData.idToken,
+              +resData.expiresIn,
+            );
+          }),
+        )
+    );
   }
 
   private handleAuthentication(
@@ -77,7 +80,7 @@ export class AuthService {
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
   }
-
+  // login error handling start
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
@@ -96,4 +99,5 @@ export class AuthService {
     }
     return throwError(errorMessage);
   }
+  // login error handling end
 }
