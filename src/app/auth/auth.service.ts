@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 
 import { User } from './user.model';
 
@@ -20,7 +20,9 @@ export class AuthService {
   // creating and storing the user data start
   // tap is an rxjs operator used without alterating the response
   // tap is used stroring the user data
-  user = new Subject<User>();
+
+  user = new BehaviorSubject<User>(null);
+  // user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
 
