@@ -24,12 +24,12 @@ export class AuthService {
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAQo0a4q1wkYCgYJeW81isDJ9JRUYm7Ib0',
         {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
+          email,
+          password,
+          returnSecureToken: true,
+        },
       )
       .pipe(
         catchError(this.handleError),
@@ -38,21 +38,21 @@ export class AuthService {
             resData.email,
             resData.localId,
             resData.idToken,
-            +resData.expiresIn
+            +resData.expiresIn,
           );
-        })
+        }),
       );
   }
-
+  // new login method created in auth service
   login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDb0xTaRAoxyCgvaDF3kk5VYOsTwB_3o7Y',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAQo0a4q1wkYCgYJeW81isDJ9JRUYm7Ib0',
         {
-          email: email,
-          password: password,
-          returnSecureToken: true
-        }
+          email,
+          password,
+          returnSecureToken: true,
+        },
       )
       .pipe(
         catchError(this.handleError),
@@ -61,9 +61,9 @@ export class AuthService {
             resData.email,
             resData.localId,
             resData.idToken,
-            +resData.expiresIn
+            +resData.expiresIn,
           );
-        })
+        }),
       );
   }
 
@@ -71,7 +71,7 @@ export class AuthService {
     email: string,
     userId: string,
     token: string,
-    expiresIn: number
+    expiresIn: number,
   ) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);

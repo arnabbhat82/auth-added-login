@@ -6,7 +6,7 @@ import { AuthService, AuthResponseData } from './auth.service';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.component.html'
+  templateUrl: './auth.component.html',
 })
 export class AuthComponent {
   isLoginMode = true;
@@ -25,17 +25,20 @@ export class AuthComponent {
     }
     const email = form.value.email;
     const password = form.value.password;
-
+    // sending login request start
     let authObs: Observable<AuthResponseData>;
+    // sending login request end
 
     this.isLoading = true;
 
     if (this.isLoginMode) {
+      // sending login request start
       authObs = this.authService.login(email, password);
+      // sending login request end
     } else {
       authObs = this.authService.signup(email, password);
     }
-
+    // sending login request start
     authObs.subscribe(
       resData => {
         console.log(resData);
@@ -45,8 +48,9 @@ export class AuthComponent {
         console.log(errorMessage);
         this.error = errorMessage;
         this.isLoading = false;
-      }
+      },
     );
+    // sending login request end
 
     form.reset();
   }
