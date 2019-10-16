@@ -17,6 +17,9 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // creating and storing the user data start
+  // tap is an rxjs operator used without alterating the response
+  // tap is used stroring the user data
   user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
@@ -69,7 +72,7 @@ export class AuthService {
         )
     );
   }
-
+  // creating and storing user data start
   private handleAuthentication(
     email: string,
     userId: string,
@@ -80,6 +83,7 @@ export class AuthService {
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user);
   }
+  // creating and storing user data end
   // login error handling start
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
