@@ -49,5 +49,6 @@ import { PlaceholderDirective } from './shared/placeholder/placeholder.directive
   ],
   providers: [ShoppingListService, RecipeService],
   bootstrap: [AppComponent],
+  entryComponents: [AlertComponent],
 })
 export class AppModule {}
